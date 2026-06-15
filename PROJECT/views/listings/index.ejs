@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust</title>
+</head>
+<body>
+
+    <h1>Wanderlust</h1>
+    <h3>All Listings</h3>
+
+    <% allListings.forEach((listing) => { %>
+
+        <div>
+            <h4><%= listing.title %></h4>
+
+            <p>
+                <b>Location:</b>
+                <%= listing.location %>,
+                <%= listing.country %>
+            </p>
+
+            <p>
+                <b>Price:</b>
+                ₹<%= listing.price %>
+            </p>
+
+            <img
+                src="<%= listing.image.url %>"
+                alt="listing image"
+                width="300"
+            >
+
+            <hr>
+        </div>
+
+    <% }) %>
+
+</body>
+</html>
