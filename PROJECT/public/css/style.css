@@ -63,37 +63,49 @@ color:#222222 !important;
 }
 
 .card{
-    border:none;
+    border: none !important;
+    border-radius: 1rem !important;
+    overflow: hidden;
     margin-bottom: 2rem;
-    margin-right: 1rem;
+}
 
+.row {
+    row-gap: 1rem;
 }
 
 .card-img-top{
     border-radius: 1rem !important;
     width: 100% !important;
-    object-fit: cover  !important;
+    height: 20rem;
+    object-fit: cover !important;
 }
 
 .card-body{
-    padding: 0 !important;
+    padding: 0.75rem !important;
 }
-.card-text p{
-font-weight: 400 !important;
+.card-text{
+    font-size: 1rem;
+    font-weight: 400;
+    color: #222;
+    margin-bottom: 0;
+    line-height: 1.5;
 }
+
 .listing-link{
     text-decoration: none;
-    
+    color: inherit;
 }
+
+
 
 /* card efffect */
 .card-img-overlay{
-    opacity:0;
-
+    opacity: 0;
 }
+
 .card-img-overlay:hover{
-    opacity:0.2;
-    background-color:black;
+    opacity: 0.2;
+    background-color: black;
 }
 
 .add-btn{
