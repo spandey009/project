@@ -10,7 +10,7 @@ const ejs = require('ejs');
 const ExpressError = require('./utils/ExpressError.js');
 const wrapAsync = require('./utils/wrapAsync.js');
 const { listingSchema } = require('./schema.js');
-
+const Review = require('./models/review.js');
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 main().then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
@@ -90,7 +90,7 @@ app.post("/listings",
 ));
 
 //edit route
-app.get("/listings/:id/edit", validateListing, wrapAsync(async (req, res) => {
+app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", { listing });
@@ -104,11 +104,25 @@ app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
 }));
 
 //delete route
-app.delete("/listings/:id", validateListing, wrapAsync(async (req, res) => {
+app.delete("/listings/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 }));
+
+
+//review post route
+app.post("/listings/:id/reviews",wrapAsync( async (req, res) => {
+   let listing =  await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+    listing.reviews.push(newReview);
+    await newReview.save();
+    await listing.save();
+    // console.log("Review added successfully");
+    // res.send("New review added successfully");
+    res.redirect(`/listings/${listing._id}`);
+}));
+
 
 app.all('/*splat', wrapAsync(async (req, res, next) => {
     throw new ExpressError(404, "Page Not Found");
@@ -121,7 +135,11 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message });
 });
 
+
+
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
 
+ 
