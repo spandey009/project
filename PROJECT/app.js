@@ -12,6 +12,10 @@ const wrapAsync = require('./utils/wrapAsync.js');
 const { listingSchema,reviewSchema } = require('./schema.js');
 const Review = require('./models/review.js');
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const listings = require('./routes/listing.js'); 
+const reviews = require('./routes/review.js');
+
+
 main().then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('Error connecting to MongoDB:', err));
 
@@ -25,126 +29,12 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.get('/', (req, res) => {
-   // res.send('Hello, World!');
     res.redirect('/listings');
 });
 
-// app.get('/testlisting', async (req, res) => {
-//     let sampleListing = new Listing({
-//         title: "Cozy Cabin in the Woods",
-//         description: "A charming cabin surrounded by nature, perfect for a weekend getaway.",
-//         image: "",
-//         price: 10000,
-//         location:"Lakshdweep",
-//         country:"India"
-//     });
-//     await sampleListing.save();
-//     console.log('Sample listing saved to database');
-//     res.send('Sample listing created and saved to database');
-// });
-
-const validateListing = (req, res, next) => {
-    let{error} = listingSchema.validate(req.body);
-    if (error) {
-        let msg = error.details.map(el => el.message).join(",");
-        throw new ExpressError(400, msg);
-    }
-    next();
-};
-
-const validateReview = (req, res, next) => {
-let{error} = reviewSchema.validate(req.body);
-if (error) {
-    let msg = error.details.map(el => el.message).join(",");
-    throw new ExpressError(400, msg);
-}
-next();
-};
-
-
-//index route
-app.get("/listings", async (req, res) => {
-   const allListings = await Listing.find({});
-        res.render("listings/index.ejs", { allListings });
-    });
-
-//new route
-app.get("/listings/new", (req, res) => {
-    res.render("listings/new.ejs");
-});
-
-//show route
-app.get("/listings/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-
-    let listing = await Listing.findById(id).populate("reviews");
-
-    if (!listing) {
-        throw new ExpressError(404, "Listing Not Found");
-    }
-
-    res.render("listings/show.ejs", { listing });
-}));
-
-//create route
-app.post("/listings",
-    validateListing, wrapAsync(async (req, res) => {
-//    let result = listingSchema.validate(req.body);
-//    console.log(result);
-    const newListing = new Listing(req.body.listing);
-    await newListing.save();
-    res.redirect("/listings");
-   } 
-));
-
-//edit route
-app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
-    if (!listing) {
-        throw new ExpressError(404, "Listing Not Found");
-    }
-}));
-
-//update route
-app.put("/listings/:id", validateListing, wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    const updatedListing = await Listing.findByIdAndUpdate(id, req.body.listing, { new: true });
-    res.redirect(`/listings/${id}`);
-}));
-
-//delete route
-app.delete("/listings/:id", wrapAsync(async (req, res) => {
-    let { id } = req.params;
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-}));
-
-
-//review post route
-app.post("/listings/:id/reviews", validateReview, wrapAsync( async (req, res) => {
-   let listing =  await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review);
-    listing.reviews.push(newReview);
-    await newReview.save();
-    await listing.save();
-    // console.log("Review added successfully");
-    // res.send("New review added successfully");
-    res.redirect(`/listings/${listing._id}`);
-}));
-
-//delete review route
-app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-    res.redirect(`/listings/${id}`);
-}));
-
-
+app.use("/listings", listings);
+app.use("/listings/:id/reviews", reviews);
 
 app.all('/*splat', wrapAsync(async (req, res, next) => {
     throw new ExpressError(404, "Page Not Found");
@@ -153,13 +43,9 @@ app.all('/*splat', wrapAsync(async (req, res, next) => {
 app.use((err, req, res, next) => {
     let { statusCode=500 } = err;
 
-    //res.status(statusCode).send(message);
     res.status(statusCode).render("error.ejs", { err });
 });
-
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
-
- 
