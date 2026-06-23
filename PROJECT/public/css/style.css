@@ -62,7 +62,7 @@ color:#222222 !important;
     width: 100%;
 }
 
-.card{
+.listing-card{
     border: none !important;
     border-radius: 1rem !important;
     overflow: hidden;
@@ -126,7 +126,10 @@ color:#222222 !important;
     height: 40vh;
     object-fit: cover;
 }
-
+.card{
+    border-radius: 1rem !important;
+    min-height: 220px;
+}
 
 
 
