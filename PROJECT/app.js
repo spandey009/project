@@ -14,6 +14,8 @@ const Review = require('./models/review.js');
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const listings = require('./routes/listing.js'); 
 const reviews = require('./routes/review.js');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 
 main().then(() => console.log('Connected to MongoDB'))
@@ -29,8 +31,29 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const sessionOptions = {
+    secret:"mysecret",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        expires:Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge:1000 * 60 * 60 * 24 * 7,
+        httpOnly:true
+    }
+};
+
 app.get('/', (req, res) => {
     res.redirect('/listings');
+});
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+   // console.log(res.locals.success);
+    next();
 });
 
 app.use("/listings", listings);
@@ -49,3 +72,5 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
+
+

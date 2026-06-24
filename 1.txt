@@ -1,0 +1,6 @@
+express session-> an attempt to make our session stateful
+different session stores can be used to persist session data across requests, such as in-memory stores, database-backed stores,
+or distributed caches. This allows for a more robust and scalable session management system, enabling features like user authentication, shopping carts, and personalized user experiences.
+
+
+
