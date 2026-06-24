@@ -3,4 +3,27 @@ different session stores can be used to persist session data across requests, su
 or distributed caches. This allows for a more robust and scalable session management system, enabling features like user authentication, shopping carts, and personalized user experiences.
 
 
+Authentication-> Authentication is the process of verifying the identity of a user or system.
+It ensures that only authorized users can access certain resources or perform specific actions. Common authentication methods include username and password, multi-factor authentication (MFA), biometric verification, and token-based authentication. 
+Implementing strong authentication mechanisms is crucial for maintaining security and protecting sensitive information in web applications.
+
+Authorization-> Authorization is the process of determining what actions or resources a user is allowed to access after they have been authenticated.
+It involves defining permissions and roles that dictate what users can do within an application. Common authorization methods include role-based access control (RBAC), attribute-based access control (ABAC), and policy-based access control (PBAC).
+Proper authorization ensures that users can only perform actions that they are permitted to, enhancing security and preventing unauthorized access to sensitive data or functionality.
+
+Storing Passwords-> we never store password as it is. we store their hashed form.
+Hashing- Hashing is a one-way cryptographic function that transforms input data (like a password) into a fixed-size string of characters, which is typically a hash value.
+ This process is irreversible, meaning you cannot retrieve the original input from the hash. Common hashing algorithms include SHA-256, bcrypt, and Argon2.
+
+for every input there is a fixed output.
+for different inputs,there is a differerent output of same length.
+small changes in input should bring large change in output.
+
+
+
+
+
+
+
+
 
