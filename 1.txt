@@ -19,9 +19,17 @@ for every input there is a fixed output.
 for different inputs,there is a differerent output of same length.
 small changes in input should bring large change in output.
 
+salting- password salting is a technique used to enhance the security of stored passwords by adding a unique random value, known as a "salt," to each password before hashing it.
+This ensures that even if two users have the same password, their hashed values will be different due to the unique salts. Salting helps protect against rainbow table attacks and makes it significantly harder for attackers to crack passwords.
 
+configuring strategy-> we can configure our strategy to use different fields for username and password, or to customize the authentication process in other ways.
+passport.initialize() is a middleware that initializes Passport and is required for using Passport in an Express application. It sets up the necessary configurations and prepares Passport to handle authentication requests.
+passport.session() is a middleware that integrates Passport with the session management of an Express application. It
+allows Passport to maintain user authentication state across multiple requests by storing user information in the session. This enables features like persistent login sessions, where users remain authenticated even after navigating to different pages or refreshing the browser.
 
-
+passport.use(new LocalStrategy(User.authenticate())): This line configures Passport to use the LocalStrategy for authentication. The LocalStrategy is a strategy provided by Passport that allows users to authenticate using a username and password
+. The User.authenticate() method is typically provided by the user model (often using libraries like Mongoose) and handles the actual authentication logic, such as verifying the username and password against stored credentials.
+passport.serializeUser(User.serializeUser()): This line defines how user information is serialized and stored in
 
 
 
