@@ -6,11 +6,11 @@ const Review = require("./models/review.js");
 const { reviewSchema } = require("./schema.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
-   // console.log(req.isAuthenticated());
-   // console.log(req.user);
-  // console.log(req.path,"...",req.originalUrl);
     if (!req.isAuthenticated()) {
-        req.session.redirectUrl = req.originalUrl;
+
+        if (req.method === "GET") {
+            req.session.redirectUrl = req.originalUrl;
+        }
 
         req.flash("error", "You must be signed in to do that!");
         return res.redirect("/login");

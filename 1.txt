@@ -32,6 +32,9 @@ passport.use(new LocalStrategy(User.authenticate())): This line configures Passp
 passport.serializeUser(User.serializeUser()): This line defines how user information is serialized and stored in
 
 
-
+MVC- model, view, controller.
+It is a design pattern used in software development to separate the application logic into three interconnected components.
+The model represents the data and business logic, the view handles the presentation and user interface,
+and the controller manages the flow of data between the model and view. This separation of concerns promotes modularity, maintainability, and scalability in application development.
 
 
