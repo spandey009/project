@@ -69,7 +69,7 @@
               novalidate
               class="needs-validation">
 
-            <div class="mb-3 mt-3">
+            <!-- <div class="mb-3 mt-3">
                 <label for="rating" class="form-label">
                     Rating:
                 </label>
@@ -81,11 +81,27 @@
                        max="5"
                        class="form-range"
                        required>
-
                 <div class="invalid-feedback">
                     Please provide a valid rating.
                 </div>
-            </div>
+            </div> -->
+
+       
+
+<fieldset class="starability-heart">
+  <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+  <input type="radio" id="second-rate1" name="review[rating]" value="1" />
+  <label for="second-rate1" title="Terrible">1 star</label>
+  <input type="radio" id="second-rate2" name="review[rating]" value="2" />
+  <label for="second-rate2" title="Not good">2 stars</label>
+  <input type="radio" id="second-rate3" name="review[rating]" value="3" />
+  <label for="second-rate3" title="Average">3 stars</label>
+  <input type="radio" id="second-rate4" name="review[rating]" value="4" />
+  <label for="second-rate4" title="Very good">4 stars</label>
+  <input type="radio" id="second-rate5" name="review[rating]" value="5" />
+  <label for="second-rate5" title="Amazing">5 stars</label>
+</fieldset>
+
 
             <div class="mb-3">
                 <label for="comment" class="form-label">
@@ -124,13 +140,16 @@
                                 <%= review.author?.username || "Anonymous" %>
                             </h5>
 
+                            <p class="starability-result card-text"
+                            data-rating="<%= review.rating %>"
+                                Rating: <%= review.rating %> 
+                           > </p>
+
                             <p class="card-text">
                                 <%= review.comment %>
                             </p>
 
-                            <p>
-                                Rating: <%= review.rating %>/5
-                            </p>
+                           
                         </div>
 
                         <form
